@@ -36,16 +36,16 @@ public class Sudoku {
 
         log.debug("Program initialized...");
 
-        showMatrix(GRID_TO_SOLVE);
-
-        solutionSudoku();
+        int[][] empty = createEmptyMatrix(9);
+        showMatrix(empty);
+        solutionSudoku(empty);
 
         log.debug("Program finished");
 
 
     }
 
-    public static void solutionSudoku(){
+    public static void solutionSudoku(int [][] matrix){
 
         final int cores = 2;
 
@@ -54,8 +54,8 @@ public class Sudoku {
         //The Executor of Threads
         final ExecutorService executor = Executors.newFixedThreadPool(cores);
 
-        if(solve(0,0,GRID_TO_SOLVE,0,1)){
-            showMatrix(GRID_TO_SOLVE);
+        if(solve(0,-1,matrix,0,0)){
+            showMatrix(matrix);
             log.debug("Eureka!!");
         }else{
             log.debug("No solution for this sudoku ");
@@ -172,6 +172,9 @@ public class Sudoku {
      * @return
      */
     public static boolean solve(int row,int col, int[][] matrix, int numberCell, int startValue){
+
+
+        //showMatrix(matrix);
 
         //Out: reach the last cell
         if(numberCell == N * N){
